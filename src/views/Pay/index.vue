@@ -1,32 +1,41 @@
 <script setup>
 
-import { getOrderAPI } from '@/apis/pay'
+import { getOrderAPI } from '@/apis/pay' // 导入获取订单数据的 API 方法
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCountDown } from '@/composables/useCountDown'
+import { useCountDown } from '@/composables/useCountDown' // 导入倒计时相关的自定义组合函数
 
-const { formatTime, start } = useCountDown()
+const { formatTime, start } = useCountDown() // 使用倒计时组合函数中的 formatTime 和 start 方法
 // 获取订单数据
 const route = useRoute()
-const payInfo = ref({})
+const payInfo = ref({}) // 创建一个响应式对象来保存订单数据
 const getPayInfo = async () => {
-  const res = await getOrderAPI(route.query.id)
-  payInfo.value = res.result
+  const res = await getOrderAPI(route.query.id) // 调用 API 方法获取订单数据
+  payInfo.value = res.result // 将获取到的订单数据保存到 payInfo 中
   // 初始化倒计时秒数
-  start(res.result.countdown)
+  start(res.result.countdown) // 使用倒计时组合函数中的 start 方法，开始倒计时
 }
-onMounted(() => getPayInfo())
- 
+onMounted(() => getPayInfo()) // 在组件挂载后调用获取订单数据的方法
 
 // 跳转支付
 // 携带订单id以及回调地址跳转到支付地址（get）
 // 支付地址
-const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
-const backURL = 'http://127.0.0.1:5173/paycallback'
-const redirectUrl = encodeURIComponent(backURL)
-const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
+const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/' // 支付接口的基础 URL
+const backURL = 'http://127.0.0.1:5173/paycallback' // 回调地址
+const redirectUrl = encodeURIComponent(backURL) // 对回调地址进行编码
+const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}` // 构建支付地址
 
 </script>
+<!-- 该代码片段实现了以下逻辑：
+
+导入所需的函数和组件，并创建了响应式对象 payInfo。
+使用 useCountDown 自定义组合函数，获取 formatTime 和 start 方法。
+使用 useRoute 获取当前路由信息，并通过 useRoute().query.id 获取订单 ID。
+定义 getPayInfo 异步函数，使用 getOrderAPI API 方法获取订单数据，并将结果保存到 payInfo 中。
+在组件挂载后，通过 onMounted 钩子调用 getPayInfo 函数获取订单数据。
+定义支付相关的 URL，包括基础 URL、回调地址和支付地址，其中支付地址包含订单 ID 和回调地址。
+在模板部分使用 payInfo 和 payUrl 显示订单信息和支付方式。
+总体上，该逻辑实现了支付页面的功能，包括获取订单数据、倒计时显示、生成支付地址等。 -->
  
  
 <template>

@@ -1,6 +1,7 @@
 <script setup>
-import { getUserOrder } from '@/apis/order'
+import { getUserOrder } from '@/apis/order' // 导入获取订单数据的 API 方法
 import { onMounted, ref } from 'vue'
+
 // tab列表
 const tabTypes = [
   { name: "all", label: "全部订单" },
@@ -11,6 +12,7 @@ const tabTypes = [
   { name: "complete", label: "已完成" },
   { name: "cancel", label: "已取消" }
 ]
+
 // 获取订单列表
 const orderList = ref([])
 const total = ref(0)
@@ -19,29 +21,27 @@ const params = ref({
   page: 1,
   pageSize: 2
 })
+
 const getOrderList = async () => {
   const res = await getUserOrder(params.value)
   orderList.value = res.result.items
   total.value = res.result.counts
 }
- 
+
 onMounted(() => getOrderList())
- 
+
 // tab切换
 const tabChange = (type) => {
-  console.log(type)
   params.value.orderState = type
   getOrderList()
 }
- 
+
 // 页数切换
 const pageChange = (page) => {
-  console.log(page)
   params.value.page = page
   getOrderList()
 }
- 
- 
+
 const fomartPayState = (payState) => {
   const stateMap = {
     1: '待付款',
@@ -54,6 +54,7 @@ const fomartPayState = (payState) => {
   return stateMap[payState]
 }
 </script>
+
  
 <template>
   <div class="order-container">
@@ -305,3 +306,12 @@ const fomartPayState = (payState) => {
   }
 }
 </style>
+<!-- 
+导入所需的函数和组件，并创建了响应式对象 orderList 和 total。
+定义了 params 对象，用于存储订单请求的参数，包括订单状态、当前页码和每页显示数量。
+定义了 getOrderList 异步函数，使用 getUserOrder API 方法获取订单列表数据，并将结果保存到 orderList 和 total 中。
+在组件挂载后，通过 onMounted 钩子调用 getOrderList 函数获取订单列表数据。
+定义了 tabChange 函数，用于处理 tab 切换事件，根据选择的订单状态更新 params.orderState 并重新获取订单列表数据。
+定义了 pageChange 函数，用于处理页码切换事件，根据选择的页码更新 params.page 并重新获取订单列表数据。
+定义了 formatPayState 函数，根据订单状态返回对应的支付状态文本。
+总体上，该逻辑实现了订单列表页面的功能，包括根据不同的订单状态切换显示不同的订单列表，以及处理订单列表的分页。 -->

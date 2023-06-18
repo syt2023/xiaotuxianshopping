@@ -1,42 +1,44 @@
 <script setup>
+// 引入所需的模块和库
+import { getCheckInfoAPI, createOrderAPI } from '@/apis/checkout' // 导入结算信息和创建订单的API
+import { useRouter } from 'vue-router' // 导入Vue Router
+import { onMounted, ref } from 'vue' // 导入Vue的响应式引用和生命周期钩子
+import { useCartStore } from '@/stores/cartStore' // 导入购物车存储库
 
-import { getCheckInfoAPI, createOrderAPI } from '@/apis/checkout'
-import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
-import { useCartStore } from '@/stores/cartStore'
-
+// 创建购物车存储实例
 const cartStore = useCartStore()
+// 创建路由实例
 const router = useRouter()
 
 // 获取结算信息
 const checkInfo = ref({}) // 订单对象
 const curAddress = ref({}) // 默认地址
 const getCheckInfo = async () => {
-  const res = await getCheckInfoAPI()
-  checkInfo.value = res.result
+  const res = await getCheckInfoAPI() // 调用API获取结算信息
+  checkInfo.value = res.result // 将结算信息赋值给订单对象
   // 适配默认地址
-  // 从地址列表中筛选出来 isDefault === 0 那一项
+  // 从地址列表中筛选出isDefault === 0的地址
   const item = checkInfo.value.userAddresses.find(item => item.isDefault === 0)
-  curAddress.value = item
+  curAddress.value = item // 将默认地址赋值给curAddress
 }
- 
+
+// 在组件挂载后调用getCheckInfo获取结算信息
 onMounted(() => getCheckInfo())
- 
-// 控制弹框打开
+
+// 控制切换地址弹框的显示与隐藏
 const showDialog = ref(false)
- 
- 
+
 // 切换地址
 const activeAddress = ref({})
 const switchAddress = (item) => {
-  activeAddress.value = item
+  activeAddress.value = item // 切换当前选中的地址
 }
 const confirm = () => {
-  curAddress.value = activeAddress.value
-  showDialog.value = false
-  activeAddress.value = {}
+  curAddress.value = activeAddress.value // 确认选择的地址为当前地址
+  showDialog.value = false // 关闭切换地址弹框
+  activeAddress.value = {} // 重置选中的地址
 }
- 
+
 // 创建订单
 const createOrder = async () => {
   const res = await createOrderAPI({
@@ -51,19 +53,19 @@ const createOrder = async () => {
       }
     }),
     addressId: curAddress.value.id
-  })
-  const orderId = res.result.id
+  }) // 调用API创建订单
+  const orderId = res.result.id // 获取订单ID
   router.push({
     path: '/pay',
     query: {
       id: orderId
     }
-  })
+  }) // 跳转到支付页面并传递订单ID作为查询参数
   // 更新购物车
   cartStore.updateNewList()
 }
- 
 </script>
+
  
 <template>
   <div class="xtx-pay-checkout-page">
@@ -396,3 +398,53 @@ const createOrder = async () => {
   }
 }
 </style>
+
+
+<!-- 这段代码实现了一个订单结算页面的逻辑。以下是其实现逻辑的解释：
+
+在 <script setup> 部分：
+
+导入名为 getCheckInfoAPI 和 createOrderAPI 的函数，这些函数是用于与结算相关的 API 交互的工具函数。
+导入名为 useRouter 的函数，用于获取 Vue Router 的实例，以便进行页面跳转。
+导入名为 onMounted 和 ref 的函数，这些函数是 Vue 3 中的响应式工具函数。
+导入名为 useCartStore 的函数，用于访问购物车数据的状态管理。
+定义了一些响应式的变量和函数：
+
+cartStore：使用 useCartStore 函数获取购物车数据的状态管理实例。
+router：获取 Vue Router 的实例。
+checkInfo：一个响应式的变量，用于存储从 getCheckInfoAPI 返回的订单对象数据。
+curAddress：一个响应式的变量，用于存储当前选中的地址信息。
+getCheckInfo：一个异步函数，用于获取结算信息。它通过调用 getCheckInfoAPI 函数来获取数据，并将数据存储在 checkInfo 和 curAddress 变量中。
+showDialog：一个响应式的变量，用于控制切换地址对话框的显示和隐藏。
+activeAddress：一个响应式的变量，用于存储选中的地址信息。
+switchAddress：一个函数，用于切换选中的地址。它接收一个地址对象作为参数，并将该地址对象存储在 activeAddress 变量中。
+confirm：一个函数，用于确认选中的地址。它将 activeAddress 变量的值赋给 curAddress 变量，并关闭切换地址对话框。
+createOrder：一个异步函数，用于创建订单。它使用 createOrderAPI 函数向服务器发送创建订单的请求，并在成功后将页面重定向到支付页面。同时，它还调用 cartStore 实例的 updateNewList 方法来更新购物车数据。
+在 <template> 部分：
+
+页面展示了收货地址、商品信息、配送时间、支付方式和金额明细等内容。
+使用 v-if 条件语句来根据 curAddress 变量的值显示不同的信息，如果地址不存在则显示相应的提示信息。
+使用 v-for 指令根据 checkInfo.goods 数组生成商品列表。
+使用 v-for 指令根据 checkInfo.userAddresses 数组生成地址列表。
+点击 "切换地址" 按钮会打开切换地址对话框，并显示地址列表供用户选择。
+"切换地址" 对话框具有取消和确定按钮，点击确定按钮会调用 confirm 函数切换地址。
+点击 "提交订单" 按钮会调用 createOrder 函数创建订单并跳转到支付页面。
+以上是这段代码的主要逻辑解释，它实现了一个订单结算页面，包括获取结算信息、选择收货地址、切换地址、创建订单等功能。具体的实现细节可能涉及到导入的 API 函数的具体实现和组件的样式定义等。 -->
+
+
+
+<!-- 首先，我们导入了所需的模块和库，包括结算信息和创建订单的API、Vue Router以及Vue的响应式引用和生命周期钩子。
+
+然后，我们创建了购物车存储实例和路由实例。
+
+接下来，定义了一些变量和函数来处理获取结算信息、切换地址和创建订单的逻辑。
+
+在组件挂载后，调用getCheckInfo函数来获取结算信息。这个函数会异步调用getCheckInfoAPI，并将返回的结果赋值给checkInfo.value，即订单对象。然后，它会从地址列表中找到isDefault === 0的地址，并将其赋值给curAddress.value，即默认地址。
+
+紧接着，定义了一个响应式引用showDialog，用于控制切换地址弹框的显示与隐藏。
+
+接下来，定义了一个响应式引用activeAddress，用于保存当前选中的地址。switchAddress函数用于切换选中的地址，它会将传入的item赋值给activeAddress.value。
+
+confirm函数会将选中的地址赋值给curAddress.value，关闭切换地址弹框，然后重置选中的地址。
+
+最后，定义了一个异步函数createOrder，用于创建订单。它会调用createOrderAPI，并传入一些参数，包括配送时间类型、支付类型、支付渠道、买家留言以及商品信息和地址ID。创建订单成功后，获取订单ID，并通过路由跳转到支付页面，同时将订单ID作为查询参数传递。最后，调用cartStore的updateNewList方法来更新购物车。 -->

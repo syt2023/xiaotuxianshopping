@@ -8,6 +8,13 @@ const { y } = useScroll(window)
  
  
 </script>
+<!-- 这段代码是一个 Vue 组件的 <script> 部分的设置代码。
+
+引入了名为 LayoutHeaderUl 的组件，它可能是一个导航栏组件。
+
+使用了 vueUse 插件，具体是通过导入 useScroll 函数从 @vueuse/core 库中。该函数用于监听页面滚动。
+
+useScroll(window) 会返回一个对象，其中的 y 属性表示页面垂直滚动的距离。 -->
  
 <template>
   <div class="app-header-sticky" :class="{ show: y > 78 }">
@@ -79,3 +86,21 @@ const { y } = useScroll(window)
   }
 }
 </style>
+
+
+
+
+
+<!-- 这段代码是该组件的模板部分，用于渲染页面的 HTML 结构。
+
+最外层的 div 元素具有类名 app-header-sticky，并使用动态类绑定 :class="{ show: y > 78 }"。这意味着当 y 大于 78 时，会添加 show 类，从而显示该元素。
+
+在 div 元素内部，有一个具有类名 container 的容器。
+
+RouterLink 组件被用作网站的标志性 logo，并通过 to="/" 设置导航到根目录。
+
+在导航区域下方，使用了 LayoutHeaderUl 组件来展示更多导航内容，可能是一个具有多个导航链接的组件。
+
+div 元素内的 .right 类包含两个使用 RouterLink 组件的链接，分别是 "品牌" 和 "专题"。
+
+该代码片段展示了一个顶部固定导航栏的组件，通过监听页面滚动距离来实现导航栏的显示与隐藏效果，并通过组合使用 RouterLink 组件和自定义的导航组件来展示导航链接。 -->

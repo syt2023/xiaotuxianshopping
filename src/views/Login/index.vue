@@ -3,6 +3,7 @@
 
 // 表单校验（账号名+密码）
 
+
 import { ref } from 'vue'
 
 import { ElMessage } from 'element-plus'
@@ -12,6 +13,8 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 
 const userStore = useUserStore()
+// 这段代码实现了一个账号登录页面的功能，并对表单进行了校验。
+// 导入所需的库和函数，并创建一个名为 form 的表单对象，其中包含了账号、密码和同意协议的初始值。
 
 // 1. 准备表单对象
 const form = ref({
@@ -44,7 +47,7 @@ const rules = {
     }
   ]
 }
-
+// 定义了一个名为 rules 的规则对象，用于对账号、密码和同意协议进行校验。规则对象中使用了不同的验证规则，例如必填、最小长度和自定义校验逻辑。
 // 3. 获取form实例做统一校验
 const formRef = ref(null)
 const router = useRouter()
@@ -65,7 +68,9 @@ const doLogin = () => {
     }
   })
 }
-
+// 定义了 formRef 和 router 变量，并创建了 doLogin 方法。doLogin 方法会在点击登录按钮时触发。
+// formRef.value.validate 方法用于统一校验表单，通过回调函数的参数 valid 判断是否通过校验。
+// 如果通过校验，执行登录逻辑，包括调用 userStore.getUserInfo 方法获取用户信息，显示登录成功的提示消息，并跳转到首页。
 // 1. 用户名和密码 只需要通过简单的配置（看文档的方式 - 复杂功能通过多个不同组件拆解）
 // 2. 同意协议  自定义规则  validator:(rule,value,callback)=>{}
 // 3. 统一校验  通过调用form实例的方法 validate -> true
@@ -356,3 +361,16 @@ const doLogin = () => {
   color: #fff;
 }
 </style>
+
+
+<!-- 实现逻辑：
+
+该代码实现了一个登录页面的功能，包括页面头部、内容区域和底部。
+在页面头部，显示了网站的 Logo，并提供了一个链接，可以跳转到网站首页。
+内容区域包含了一个导航标签和一个账户登录表单。表单中有账户输入框、密码输入框和同意协议复选框。用户可以输入账户名和密码，并勾选同意协议。
+表单使用了 Element Plus 的 <el-form> 组件和相关的表单项组件，如 <el-input> 和 <el-checkbox>，并通过 v-model 绑定表单数据。
+表单项的校验规则通过 :rules 属性进行传递，其中包括了对账户、密码和同意协议的校验规则。
+点击登录按钮时，会触发 doLogin 方法。该方法首先会对表单进行统一校验，如果通过校验，则执行登录逻辑。
+登录逻辑包括调用 userStore.getUserInfo 方法获取用户信息，显示登录成功的提示消息，并通过 router.replace 跳转到网站首页。
+页面底部显示了一组导航链接和版权信息。
+总体上，该代码实现了一个简单的登录页面，通过表单校验确保用户输入的账户和密码符合要求，并提供了登录功能 -->

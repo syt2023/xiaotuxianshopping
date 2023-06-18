@@ -1,21 +1,25 @@
 <script setup>
 
-import { useCartStore } from '@/stores/cartStore'
+import { useCartStore } from '@/stores/cartStore' // 导入购物车状态管理的函数
+
+// 使用useCartStore函数获取cartStore对象
 const cartStore = useCartStore()
- 
+
 // 单选回调
-const singleCheck = (i, selected) => {
-  console.log(i, selected)
+const singleCheck = (i, selected) => { // 定义单选回调函数，接受商品对象i和选择状态selected作为参数
+  console.log(i, selected) // 打印商品对象和选择状态
   // store cartList 数组 无法知道要修改谁的选中状态？
   // 除了selected补充一个用来筛选的参数 - skuId
-  cartStore.singleCheck(i.skuId, selected)
+  cartStore.singleCheck(i.skuId, selected) // 调用cartStore对象的singleCheck方法，传递商品的skuId和选择状态进行更新
 }
- 
-const allCheck = (selected) => {
-  cartStore.allCheck(selected)
+
+// 全选回调
+const allCheck = (selected) => { // 定义全选回调函数，接受选择状态selected作为参数
+  cartStore.allCheck(selected) // 调用cartStore对象的allCheck方法，传递选择状态来更新购物车中所有商品的选择状态
 }
 
 </script>
+
  
 <template>
   <div class="xtx-cart-page">
@@ -223,3 +227,10 @@ const allCheck = (selected) => {
  
 }
 </style>
+
+<!-- 
+// 注释解释实现：
+// 1. 首先，通过`import`语句导入了`cartStore`对象，该对象是使用`useCartStore`函数获取的购物车状态管理对象。
+// 2. 然后，定义了`singleCheck`函数作为单选回调。当调用该函数时，会打印商品对象和选择状态，并通过调用`cartStore`的`singleCheck`方法来更新购物车中特定商品的选择状态。
+// 3. 类似地，定义了`allCheck`函数作为全选回调。该函数接受选择状态作为参数，并通过调用`cartStore`的`allCheck`方法来更新购物车中所有商品的选择状态。
+// 4. 最后，这段代码的目的是实现购物车页面中的商品选择功能，其中的逻辑依赖于`cartStore`对象提供的方法和状态管理能力。 -->

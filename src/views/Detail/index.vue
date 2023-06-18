@@ -1,39 +1,44 @@
 <script setup>
+// 引入所需的模块和组件
+import DetailHot from './components/DetailHot.vue' // 导入详情热点组件
+import { getDetail } from '@/apis/detail' // 导入获取详情信息的API
+import { onMounted, ref } from 'vue' // 导入Vue的响应式引用和生命周期钩子
+import { useRoute } from 'vue-router' // 导入Vue Router的useRoute函数
+import { ElMessage } from 'element-plus' // 导入Element Plus的消息组件
+import { useCartStore } from '@/stores/cartStore' // 导入购物车存储库
 
-import DetailHot from './components/DetailHot.vue'
-import { getDetail } from '@/apis/detail'
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { useCartStore } from '@/stores/cartStore'
-
+// 创建购物车存储实例
 const cartStore = useCartStore()
+// 创建响应式引用变量goods，用于保存详情信息
 const goods = ref({})
+// 创建路由实例
 const route = useRoute()
+
+// 获取商品详情信息
 const getGoods = async () => {
-  const res = await getDetail(route.params.id)
-  goods.value = res.result
+  const res = await getDetail(route.params.id) // 调用API获取详情信息
+  goods.value = res.result // 将结果赋值给goods变量
 }
-onMounted(() => getGoods())
- 
-// sku规格被操作时
+onMounted(() => getGoods()) // 在组件挂载后调用getGoods函数获取商品详情信息
+
+// 当sku规格被操作时
 let skuObj = {}
 const skuChange = (sku) => {
   console.log(sku)
-  skuObj = sku
+  skuObj = sku // 将选中的sku赋值给skuObj变量
 }
- 
+
 // count
-const count = ref(1)
+const count = ref(1) // 创建响应式引用变量count，并初始化为1
 const countChange = (count) => {
   console.log(count)
 }
- 
+
 // 添加购物车
 const addCart = () => {
   if (skuObj.skuId) {
     console.log(skuObj, cartStore.addCart)
-    // 规则已经选择  触发action
+    // 规格已经选择，触发addCart方法
     cartStore.addCart({
       id: goods.value.id,
       name: goods.value.name,
@@ -45,12 +50,12 @@ const addCart = () => {
       selected: true
     })
   } else {
-    // 规格没有选择 提示用户
+    // 规格没有选择，提示用户选择规格
     ElMessage.warning('请选择规格')
   }
 }
- 
 </script>
+
  
 <template>
   <div class="xtx-goods-page">
@@ -413,3 +418,19 @@ const addCart = () => {
   padding: 25px 0;
 }
 </style>
+
+
+
+<!-- 首先，我们引入了所需的模块和组件，包括详情热点组件、获取详情信息的API、Vue的响应式引用和生命周期钩子、Vue Router的useRoute函数以及Element Plus的消息组件。
+
+接下来，创建了购物车存储实例和响应式引用变量goods，用于保存详情信息。创建了路由实例。
+
+然后，定义了一个异步函数getGoods，用于获取商品详情信息。它会调用getDetailAPI，并传入路由参数route.params.id来获取对应的商品详情。获取到的结果会赋值给goods.value。
+
+在组件挂载后，通过onMounted钩子调用getGoods函数来获取商品详情信息。
+
+在sku规格被操作时，定义了一个变量skuObj用于保存选中的sku规格。skuChange函数接收选中的sku作为参数，并将其赋值给skuObj。
+
+创建了响应式引用变量count，并初始化为1。countChange函数接收一个count参数，但目前没有具体实现。
+
+最后，定义了一个addCart函数，用于添加商品到购物车。如果已经选择了规格（即skuObj.skuId存在），则调用cartStore的addCart方法，传入商品的相关信息，包括商品ID、名称、图片、价格、数量、skuID、规格文本和选中状态。如果规格没有选择，则通过Element Plus的消息组件提示用户选择规格 -->

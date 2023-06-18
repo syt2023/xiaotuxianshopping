@@ -12,35 +12,43 @@ const cartStore = useCartStore()
     </a>
     <div class="layer">
       <div class="list">
- 
+        <!-- 遍历购物车列表 -->
         <div class="item" v-for="i in cartStore.cartList" :key="i">
           <RouterLink to="">
+            <!-- 商品图片 -->
             <img :src="i.picture" alt="" />
             <div class="center">
-              <p class="name ellipsis-2">
-                {{ i.name }}
-              </p>
+              <!-- 商品名称 -->
+              <p class="name ellipsis-2">{{ i.name }}</p>
+              <!-- 商品属性 -->
               <p class="attr ellipsis">{{ i.attrsText }}</p>
             </div>
             <div class="right">
+              <!-- 商品价格 -->
               <p class="price">¥{{ i.price }}</p>
+              <!-- 商品数量 -->
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
+          <!-- 删除商品按钮 -->
           <i class="iconfont icon-close-new" @click="cartStore.delCart(i.skuId)"></i>
         </div>
- 
       </div>
       <div class="foot">
         <div class="total">
+          <!-- 购物车总件数 -->
           <p>共 {{ cartStore.allCount }} 件商品</p>
+          <!-- 购物车总价 -->
           <p>¥ {{ cartStore.allPrice.toFixed(2) }} </p>
         </div>
+        <!-- 去购物车结算按钮 -->
         <el-button size="large" type="primary" @click="$router.push('/cartlist')">去购物车结算</el-button>
       </div>
     </div>
-</div>
+  </div>
 </template>
+
+
  
 <style scoped lang="scss">
 .cart {
@@ -222,3 +230,16 @@ const cartStore = useCartStore()
   }
 }
 </style>
+
+
+<!-- 在最外层的div元素中，使用了cart类名来设置样式。
+
+a元素展示了购物车图标和购物车中商品的数量，使用了icon-cart图标和em标签来显示数量。
+
+div元素中的layer类包含了购物车列表和底部结算区域。
+
+在购物车列表中，使用了v-for指令遍历cartStore.cartList数组，并为每个商品项生成一个div元素。商品项的属性包括图片、名称、属性、价格和数量，其中使用了RouterLink组件包裹商品图片和名称，点击可以跳转到商品详情页面。删除商品按钮使用了icon-close-new图标，并绑定了点击事件@click="cartStore.delCart(i.skuId)"来从购物车中删除该商品。
+
+在底部结算区域，展示了购物车总件数和总价，并使用了el-button组件作为去购物车结算按钮，点击后跳转到/cartlist页面。
+
+这段代码主要用于展示购物车组件的结构和内容，并通过数据绑定和循环指令来动态展示购物车中的商品列表和总计信息 -->
