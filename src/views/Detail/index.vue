@@ -56,6 +56,16 @@ const addCart = () => {
 }
 </script>
 
+
+
+<!-- 导入所需的模块和组件。
+创建Vue组件中的响应式引用和路由实例。
+使用API获取商品详情信息，并将结果保存在goods变量中。
+当sku规格被操作时，将选中的sku赋值给skuObj变量。
+创建响应式引用变量count，并提供一个函数countChange用于修改count的值。
+实现添加购物车的逻辑，判断是否选择了规格，如果选择了则调用cartStore的addCart方法将商品添加到购物车中，如果未选择则通过Element Plus的消息组件提示用户选择规格。
+请注意，这段代码中的一些变量和函数可能依赖于其他文件中的定义和实现，例如./components/DetailHot.vue和@/apis/detail，因此需要确保在正确的环境中运行。此外，此代码片段可能还需要Vue和Vue Router等库的支持才能正常运行。 -->
+
  
 <template>
   <div class="xtx-goods-page">
@@ -141,7 +151,7 @@ const addCart = () => {
                   加入购物车
                 </el-button>
               </div>
- 
+
             </div>
           </div>
           <div class="goods-footer">
@@ -185,80 +195,80 @@ const addCart = () => {
     min-height: 600px;
     background: #fff;
     display: flex;
- 
+
     .media {
       width: 580px;
       height: 600px;
       padding: 30px 50px;
     }
- 
+
     .spec {
       flex: 1;
       padding: 30px 30px 30px 0;
     }
   }
- 
+
   .goods-footer {
     display: flex;
     margin-top: 20px;
- 
+
     .goods-article {
       width: 940px;
       margin-right: 20px;
     }
- 
+
     .goods-aside {
       width: 280px;
       min-height: 1000px;
     }
   }
- 
+
   .goods-tabs {
     min-height: 600px;
     background: #fff;
   }
- 
+
   .goods-warn {
     min-height: 600px;
     background: #fff;
     margin-top: 20px;
   }
- 
+
   .number-box {
     display: flex;
     align-items: center;
- 
+
     .label {
       width: 60px;
       color: #999;
       padding-left: 10px;
     }
   }
- 
+
   .g-name {
     font-size: 22px;
   }
- 
+
   .g-desc {
     color: #999;
     margin-top: 10px;
   }
- 
+
   .g-price {
     margin-top: 10px;
- 
+
     span {
       &::before {
         content: "¥";
         font-size: 14px;
       }
- 
+
       &:first-child {
         color: $priceColor;
         margin-right: 10px;
         font-size: 22px;
       }
- 
+
       &:last-child {
         color: #999;
         text-decoration: line-through;
@@ -266,37 +276,37 @@ const addCart = () => {
       }
     }
   }
- 
+
   .g-service {
     background: #f5f5f5;
     width: 500px;
     padding: 20px 10px 0 10px;
     margin-top: 10px;
- 
+
     dl {
       padding-bottom: 20px;
       display: flex;
       align-items: center;
- 
+
       dt {
         width: 50px;
         color: #999;
       }
- 
+
       dd {
         color: #666;
- 
+
         &:last-child {
           span {
             margin-right: 10px;
- 
+
             &::before {
               content: "•";
               color: $xtxColor;
               margin-right: 2px;
             }
           }
- 
+
           a {
             color: $xtxColor;
           }
@@ -304,18 +314,18 @@ const addCart = () => {
       }
     }
   }
- 
+
   .goods-sales {
     display: flex;
     width: 400px;
     align-items: center;
     text-align: center;
     height: 140px;
- 
+
     li {
       flex: 1;
       position: relative;
- 
+
       ~li::after {
         position: absolute;
         top: 10px;
@@ -324,27 +334,27 @@ const addCart = () => {
         border-left: 1px solid #e4e4e4;
         content: "";
       }
- 
+
       p {
         &:first-child {
           color: #999;
         }
- 
+
         &:nth-child(2) {
           color: $priceColor;
           margin-top: 10px;
         }
- 
+
         &:last-child {
           color: #666;
           margin-top: 10px;
- 
+
           i {
             color: $xtxColor;
             font-size: 14px;
             margin-right: 2px;
           }
- 
+
           &:hover {
             color: $xtxColor;
             cursor: pointer;
@@ -354,22 +364,22 @@ const addCart = () => {
     }
   }
 }
- 
+
 .goods-tabs {
   min-height: 600px;
   background: #fff;
- 
+
   nav {
     height: 70px;
     line-height: 70px;
     display: flex;
     border-bottom: 1px solid #f5f5f5;
- 
+
     a {
       padding: 0 40px;
       font-size: 18px;
       position: relative;
- 
+
       >span {
         color: $priceColor;
         font-size: 16px;
@@ -378,42 +388,42 @@ const addCart = () => {
     }
   }
 }
- 
+
 .goods-detail {
   padding: 40px;
- 
+
   .attrs {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 30px;
- 
+
     li {
       display: flex;
       margin-bottom: 10px;
       width: 50%;
- 
+
       .dt {
         width: 100px;
         color: #999;
       }
- 
+
       .dd {
         flex: 1;
         color: #666;
       }
     }
   }
- 
+
   >img {
     width: 100%;
   }
 }
- 
+
 .btn {
   margin-top: 20px;
- 
+
 }
- 
+
 .bread-container {
   padding: 25px 0;
 }
